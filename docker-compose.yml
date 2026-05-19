@@ -1,0 +1,44 @@
+name: kutaj
+
+# Dev infraštruktúra: postgres + redis. API a worker bežia z host venvu
+# pre rýchly reload. Produkcia ich beží cez systemd, viď docs/DEPLOYMENT.md.
+#
+# Bindujem na 127.0.0.1 — nikdy 0.0.0.0 — aby sa dev DB náhodou nevystavila.
+
+services:
+  postgres:
+    image: pgvector/pgvector:pg16
+    container_name: kutaj_postgres
+    environment:
+      POSTGRES_USER: kutaj
+      POSTGRES_PASSWORD: kutaj_dev_only
+      POSTGRES_DB: kutaj
+    ports:
+      - "127.0.0.1:5432:5432"
+    volumes:
+      - kutaj_pg_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U kutaj -d kutaj"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    restart: unless-stopped
+
+  redis:
+    image: redis:7-alpine
+    container_name: kutaj_redis
+    ports:
+      - "127.0.0.1:6379:6379"
+    command: ["redis-server", "--save", "60", "1", "--appendonly", "no"]
+    volumes:
+      - kutaj_redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    restart: unless-stopped
+
+volumes:
+  kutaj_pg_data:
+  kutaj_redis_data:

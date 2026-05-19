@@ -1,0 +1,50 @@
+# Python
+__pycache__/
+*.py[cod]
+*.so
+*.egg-info/
+.eggs/
+build/
+dist/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+.coverage.*
+htmlcov/
+
+# Virtualenv
+.venv/
+venv/
+env/
+
+# Env / secrets — NIKDY necommituj
+.env
+.env.local
+.env.*.local
+!.env.example
+
+# Local storage (audio, tmp, backups) — produkcia má všetko v /var/kutaj
+storage/
+audio_local/
+backups/
+
+# Logs
+*.log
+
+# IDE / OS
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+
+# Node / web build
+node_modules/
+apps/web/dist/
+
+# Misc
+*.bak
+tmp/
+.tmp/
