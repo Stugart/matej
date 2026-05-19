@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="sk">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Kutaj AI Core</title>
+  <style>
+    :root { color-scheme: light dark; --fg: #111; --muted: #666; --line: #ddd; }
+    @media (prefers-color-scheme: dark) {
+      :root { --fg: #eee; --muted: #999; --line: #333; }
+    }
+    body {
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      max-width: 720px; margin: 4rem auto; padding: 0 1.25rem; line-height: 1.55;
+      color: var(--fg);
+    }
+    h1 { font-weight: 600; letter-spacing: -0.02em; margin-bottom: 0.25rem; }
+    h2 { font-size: 1.1rem; margin-top: 2rem; border-top: 1px solid var(--line);
+         padding-top: 1rem; }
+    code, .mono { font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: 0.92em; }
+    .pill {
+      display: inline-block; padding: 0.15rem 0.6rem;
+      border: 1px solid currentColor; border-radius: 999px; font-size: 0.8em;
+    }
+    ul { padding-left: 1.25rem; }
+    li { margin: 0.25rem 0; }
+    .muted { color: var(--muted); font-size: 0.9em; }
+    a { color: inherit; }
+  </style>
+</head>
+<body>
+  <h1>Kutaj AI Core</h1>
+  <p class="pill mono" id="status">načítavam…</p>
+
+  <p>Osobný „druhý mozog" — nahrávanie hlasových poznámok, automatický prepis,
+     AI analýza, projektová pamäť, sémantické vyhľadávanie.</p>
+
+  <h2>Endpointy</h2>
+  <ul>
+    <li><a href="/api/v1/health">/api/v1/health</a> — liveness</li>
+    <li><a href="/api/v1/docs">/api/v1/docs</a> — OpenAPI (len v dev móde)</li>
+  </ul>
+
+  <h2>Stav</h2>
+  <p class="muted">
+    P0 skeleton. Recorder, transkripcia a analýza prídu v ďalších fázach
+    (viď roadmap v zadaní projektu).
+  </p>
+
+<script>
+  fetch("/api/v1/health")
+    .then((r) => r.json())
+    .then((j) => {
+      document.getElementById("status").textContent =
+        `${j.status} · ${j.env} · v${j.version}`;
+    })
+    .catch(() => {
+      document.getElementById("status").textContent = "API nedostupné";
+    });
+</script>
+</body>
+</html>
